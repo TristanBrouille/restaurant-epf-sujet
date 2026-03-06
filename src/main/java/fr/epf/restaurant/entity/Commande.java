@@ -1,0 +1,34 @@
+package fr.epf.restaurant.entity;
+
+import java.time.LocalDate;
+
+public class Commande {
+
+    private Long id;
+    private Long clientId;
+    private LocalDate dateCommande;
+    private StatutCommande statut;
+
+    public Commande(Long id, Long clientId, LocalDate dateCommande, StatutCommande statut) {
+        this.id = id;
+        this.clientId = clientId;
+        this.dateCommande = dateCommande;
+        this.statut = statut;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Long getClientId() {
+        return clientId;
+    }
+
+    public LocalDate getDateCommande() {
+        return dateCommande;
+    }
+
+    public StatutCommande getStatut() {
+        return statut;
+    }
+}
