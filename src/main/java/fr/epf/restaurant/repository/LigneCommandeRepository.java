@@ -1,6 +1,8 @@
 package fr.epf.restaurant.repository;
 
 import fr.epf.restaurant.DTO.LigneCommandeDto;
+import fr.epf.restaurant.DTO.LigneCommandeUp;
+import fr.epf.restaurant.entity.LigneCommande;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -17,13 +19,13 @@ public class LigneCommandeRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public Collection<LigneCommandeDto> ofCommandeId(Long id) {
+    public Collection<LigneCommande> ofCommandeId(Long id) {
         String sql = "SELECT * FROM LIGNE_COMMANDE_CLIENT WHERE commande_client_id = ?";
 
         return jdbcTemplate.query(
                 sql,
                 new Object[]{id},
-                (rs, rowNum) -> new LigneCommandeDto(
+                (rs, rowNum) -> new LigneCommande(
                         rs.getLong("id"),
                         rs.getLong("plat_id"),
                         rs.getDouble("quantite")

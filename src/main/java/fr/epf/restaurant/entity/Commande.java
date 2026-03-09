@@ -31,4 +31,8 @@ public class Commande {
     public StatutCommande getStatut() {
         return statut;
     }
+
+    public void setStatut(StatutCommande statut) {
+        this.statut = statut;
+    }
 }

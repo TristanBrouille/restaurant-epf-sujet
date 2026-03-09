@@ -1,8 +1,9 @@
 package fr.epf.restaurant.repository;
 
 import fr.epf.restaurant.DTO.CommandeRequest;
-import fr.epf.restaurant.DTO.LigneCommandeDto;
+import fr.epf.restaurant.DTO.LigneCommandeUp;
 import fr.epf.restaurant.entity.Commande;
+import fr.epf.restaurant.entity.LigneCommande;
 import fr.epf.restaurant.entity.StatutCommande;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -55,7 +56,7 @@ public class CommandeRepository {
         VALUES (?, ?, ?)
     """;
 
-        for (LigneCommandeDto ligne : request.lignes()) {
+        for (LigneCommandeUp ligne : request.lignes()) {
             jdbcTemplate.update(
                     sqlLigne,
                     commandeId,
@@ -86,6 +87,42 @@ public class CommandeRepository {
         return jdbcTemplate.query(sql, mapper);
     }
 
+    public Optional<Commande> ofId(Long id) {
+        String sql = "SELECT * FROM COMMANDE_CLIENT WHERE id=?";
+
+        List<Commande> commandes = jdbcTemplate.query(
+                sql,
+                new Object[]{id},
+                (rs, rowNum) -> {
+                    Timestamp ts = rs.getTimestamp("date_commande");
+                    LocalDate date = ts.toLocalDateTime()
+                            .toLocalDate();
+
+                    return new Commande(
+                            rs.getLong("id"),
+                            rs.getLong("client_id"),
+                            date,
+                            StatutCommande.valueOf(rs.getString("statut"))
+                    );
+                }
+        );
+
+        if (commandes.isEmpty()) {
+            return Optional.empty();
+        } else {
+            return Optional.of(commandes.get(0));
+        }
+
+    }
+
+    public void updateStatut(Long id, StatutCommande statut) {
+        jdbcTemplate.update(
+                "UPDATE COMMANDE_CLIENT SET statut = ? WHERE id = ?",
+                statut.name(),
+                id
+        );
+    }
+
     public Optional<Commande> getLastCommandeByClient(Long clientId) {
 
         String sql = """
@@ -112,7 +149,6 @@ public class CommandeRepository {
                 }
         );
 
-        // retourne Optional vide si aucune commande
         if (commandes.isEmpty()) {
             return Optional.empty();
         } else {

@@ -47,4 +47,8 @@ public class Ingredient {
     public double getSeuilAlerte() {
         return seuilAlerte;
     }
+
+    public void setStockActuel(double stockActuel) {
+        this.stockActuel = stockActuel;
+    }
 }
