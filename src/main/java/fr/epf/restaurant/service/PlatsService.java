@@ -35,7 +35,7 @@ public class PlatsService {
         Collection<IngredientWithQuantity> ingredients = ingredientIdQuantity.entrySet()
                 .stream()
                 .map(entry -> new IngredientWithQuantity(
-                        ingredientRepository.ofId(entry.getKey()),
+                        ingredientRepository.ofId(entry.getKey()).orElseThrow(() -> new RuntimeException("Aucun ingredient trouvé pour cet id")),
                         entry.getValue()
                 ))
                 .toList();

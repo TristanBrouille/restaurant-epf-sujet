@@ -1,12 +1,12 @@
 package fr.epf.restaurant.entity;
 
-public class LigneCommande {
+public class LigneCommandeClient {
 
-    private Long id;
-    private Long platId;
-    private Double quantite;
+    private final Long id;
+    private final Long platId;
+    private final Double quantite;
 
-    public LigneCommande(Long id, Long platId, Double quantite) {
+    public LigneCommandeClient(Long id, Long platId, Double quantite) {
         this.id = id;
         this.platId = platId;
         this.quantite = quantite;

@@ -1,8 +1,7 @@
 package fr.epf.restaurant.repository;
 
-import fr.epf.restaurant.DTO.LigneCommandeDto;
-import fr.epf.restaurant.DTO.LigneCommandeUp;
-import fr.epf.restaurant.entity.LigneCommande;
+import fr.epf.restaurant.entity.LigneCommandeClient;
+import fr.epf.restaurant.entity.LigneCommandeFournisseur;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -19,16 +18,31 @@ public class LigneCommandeRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public Collection<LigneCommande> ofCommandeId(Long id) {
+    public Collection<LigneCommandeClient> ofCommandeClientId(Long id) {
         String sql = "SELECT * FROM LIGNE_COMMANDE_CLIENT WHERE commande_client_id = ?";
 
         return jdbcTemplate.query(
                 sql,
                 new Object[]{id},
-                (rs, rowNum) -> new LigneCommande(
+                (rs, rowNum) -> new LigneCommandeClient(
                         rs.getLong("id"),
                         rs.getLong("plat_id"),
                         rs.getDouble("quantite")
+                )
+        );
+    }
+
+    public Collection<LigneCommandeFournisseur> ofCommandeFournisseurId(Long id) {
+        String sql = "SELECT * FROM LIGNE_COMMANDE_FOURNISSEUR WHERE commande_fournisseur_id = ?";
+
+        return jdbcTemplate.query(
+                sql,
+                new Object[]{id},
+                (rs, rowNum) -> new LigneCommandeFournisseur(
+                        rs.getLong("id"),
+                        rs.getLong("ingredient_id"),
+                        rs.getDouble("quantite_commandee"),
+                        rs.getDouble("prix_unitaire")
                 )
         );
     }

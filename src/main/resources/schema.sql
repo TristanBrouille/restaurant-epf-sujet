@@ -36,7 +36,6 @@ CREATE TABLE INGREDIENT (
     seuil_alerte  DOUBLE       NOT NULL DEFAULT 0
 );
 
--- Association Plat <-> Ingrédient (quantité nécessaire pour préparer 1 portion)
 CREATE TABLE PLAT_INGREDIENT (
     plat_id           BIGINT NOT NULL,
     ingredient_id     BIGINT NOT NULL,
@@ -71,7 +70,6 @@ CREATE TABLE FOURNISSEUR (
     email   VARCHAR(150) UNIQUE NOT NULL
 );
 
--- Catalogue des prix : quel fournisseur vend quel ingrédient à quel prix
 CREATE TABLE FOURNISSEUR_INGREDIENT (
     fournisseur_id  BIGINT        NOT NULL,
     ingredient_id   BIGINT        NOT NULL,

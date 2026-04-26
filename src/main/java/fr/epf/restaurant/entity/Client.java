@@ -1,21 +1,12 @@
 package fr.epf.restaurant.entity;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
 public class Client {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    private String nom;
-
-    private String prenom;
-
-    private String email;
-
-    private String telephone;
+    private final Long id;
+    private final String nom;
+    private final String prenom;
+    private final String email;
+    private final String telephone;
 
     public Client(Long id, String nom, String prenom, String email, String telephone) {
         this.id = id;

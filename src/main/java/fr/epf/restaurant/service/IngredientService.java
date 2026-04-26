@@ -4,7 +4,6 @@ import fr.epf.restaurant.DTO.RecommandationCommande;
 import fr.epf.restaurant.entity.Fournisseur;
 import fr.epf.restaurant.entity.Ingredient;
 import fr.epf.restaurant.repository.FournisseurIngredientRepository;
-import fr.epf.restaurant.repository.FournisseurRepository;
 import fr.epf.restaurant.repository.IngredientRepository;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +34,7 @@ public class IngredientService {
 
     public Collection<RecommandationCommande> prixIngredients(Long id) {
 
-        Ingredient ingredient = ingredientRepository.ofId(id);
+        Ingredient ingredient = ingredientRepository.ofId(id).orElseThrow(() -> new RuntimeException("Aucun ingredient trouvé pour cet id"));
         Map<Double, Fournisseur> fournisseurIngredients = fournisseurIngredientRepository.ofIngredientId(id);
 
         double quantiteRecommandee =

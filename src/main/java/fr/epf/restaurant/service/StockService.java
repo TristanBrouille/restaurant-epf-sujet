@@ -2,24 +2,25 @@ package fr.epf.restaurant.service;
 
 import fr.epf.restaurant.entity.Ingredient;
 import fr.epf.restaurant.repository.IngredientRepository;
-import fr.epf.restaurant.repository.PlatIngredientRepository;
+import fr.epf.restaurant.repository.LigneCommandeRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
 import java.util.Map;
 
 @Service
 public class StockService {
 
     private final IngredientRepository ingredientRepository;
+    private final LigneCommandeRepository ligneCommandeRepository;
 
-    public StockService(IngredientRepository ingredientRepository) {
+    public StockService(IngredientRepository ingredientRepository, LigneCommandeRepository ligneCommandeRepository) {
         this.ingredientRepository = ingredientRepository;
+        this.ligneCommandeRepository = ligneCommandeRepository;
     }
 
     @Transactional
-    public boolean raiseStockOfPlat(Long platId) {
+    public boolean lowerStockOfPlat(Long platId) {
 
         Map<Ingredient, Double> ingredientsAndQuantity = ingredientRepository.ofPlatId(platId);
 
@@ -39,5 +40,13 @@ public class StockService {
         }
 
         return true;
+    }
+
+    public void increaseStock(Long commandeId) {
+        ligneCommandeRepository.ofCommandeFournisseurId(commandeId)
+                .forEach(ligne -> {
+                    Ingredient ingredient = ingredientRepository.ofId(ligne.getIngredientId()).orElseThrow();
+                    ingredientRepository.updateStock(ligne.getIngredientId(), ligne.getQuantite()+ingredient.getStockActuel());
+                });
     }
 }
