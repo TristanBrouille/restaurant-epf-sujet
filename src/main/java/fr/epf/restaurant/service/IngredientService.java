@@ -44,8 +44,9 @@ public class IngredientService {
         Map<Double, Fournisseur> fournisseurIngredients = fournisseurIngredientRepository.ofIngredientId(
                 id);
 
-        double quantiteRecommandee =
-                2 * (ingredient.getSeuilAlerte() - ingredient.getStockActuel());
+        double quantiteRecommandee = (ingredient.getSeuilAlerte() > ingredient.getStockActuel())
+                ? 2 * (ingredient.getSeuilAlerte() - ingredient.getStockActuel())
+                : ingredient.getSeuilAlerte();
 
         return fournisseurIngredients.entrySet()
                 .stream()
