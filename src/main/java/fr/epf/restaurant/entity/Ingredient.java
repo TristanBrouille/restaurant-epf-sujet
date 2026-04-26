@@ -1,20 +1,14 @@
 package fr.epf.restaurant.entity;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
 public class Ingredient {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String nom;
-    private String unite;
-    private double stockActuel;
-    private double seuilAlerte;
+    private final Long id;
+    private final String nom;
+    private final String unite;
+    private Double stockActuel;
+    private Double seuilAlerte;
 
-    public Ingredient(Long id, String nom, String unite, double stockActuel, double seuilAlerte) {
+    public Ingredient(Long id, String nom, String unite, Double stockActuel, Double seuilAlerte) {
         this.id = id;
         this.nom = nom;
         this.unite = unite;
@@ -40,15 +34,15 @@ public class Ingredient {
         return unite;
     }
 
-    public double getStockActuel() {
+    public Double getStockActuel() {
         return stockActuel;
     }
 
-    public double getSeuilAlerte() {
+    public Double getSeuilAlerte() {
         return seuilAlerte;
     }
 
-    public void setStockActuel(double stockActuel) {
+    public void setStockActuel(Double stockActuel) {
         this.stockActuel = stockActuel;
     }
 }

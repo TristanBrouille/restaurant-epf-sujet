@@ -1,9 +1,8 @@
 package fr.epf.restaurant.repository;
 
-import fr.epf.restaurant.DTO.CommandeRequest;
-import fr.epf.restaurant.DTO.LigneCommandeUp;
+import fr.epf.restaurant.DTO.CommandeClientRequest;
+import fr.epf.restaurant.DTO.LigneCommandeClientUp;
 import fr.epf.restaurant.entity.Commande;
-import fr.epf.restaurant.entity.LigneCommande;
 import fr.epf.restaurant.entity.StatutCommande;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -18,10 +17,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Repository
-public class CommandeRepository {
+public class CommandeClientRepository {
 
     private JdbcTemplate jdbcTemplate;
 
@@ -30,7 +30,7 @@ public class CommandeRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public void add(CommandeRequest request) {
+    public void add(CommandeClientRequest request) {
 
         String sqlCommande = """
         INSERT INTO COMMANDE_CLIENT (client_id, date_commande, statut)
@@ -40,23 +40,23 @@ public class CommandeRepository {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement(sqlCommande, new String[]{"ID"}); // <-- ici
+            PreparedStatement ps = connection.prepareStatement(sqlCommande, new String[]{"ID"});
             ps.setLong(1, request.clientId());
             ps.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
             ps.setString(3, StatutCommande.EN_ATTENTE.name());
             return ps;
         }, keyHolder);
 
-        Long commandeId = keyHolder.getKey().longValue();
+        Long commandeId = Objects.requireNonNull(keyHolder.getKey())
+                .longValue();
 
-        // 2️⃣ Insérer les lignes
         String sqlLigne = """
         INSERT INTO LIGNE_COMMANDE_CLIENT
         (commande_client_id, plat_id, quantite)
         VALUES (?, ?, ?)
     """;
 
-        for (LigneCommandeUp ligne : request.lignes()) {
+        for (LigneCommandeClientUp ligne : request.lignes()) {
             jdbcTemplate.update(
                     sqlLigne,
                     commandeId,
@@ -87,6 +87,25 @@ public class CommandeRepository {
         return jdbcTemplate.query(sql, mapper);
     }
 
+    public Collection<Commande> ofStatut(StatutCommande statut){
+        String sql = "SELECT * FROM COMMANDE_CLIENT WHERE statut = ?";
+
+        RowMapper<Commande> mapper = (rs, rowNum) -> {
+            Timestamp ts = rs.getTimestamp("date_commande");
+            LocalDate date = ts != null ? ts.toLocalDateTime().toLocalDate() : null;
+            return new Commande(
+                    rs.getLong("id"),
+                    rs.getLong("client_id"),
+                    date,
+                    StatutCommande.valueOf(rs.getString("statut"))
+            );
+        };
+
+        return jdbcTemplate.query(sql, mapper, statut.name());
+    }
+
+
+
     public Optional<Commande> ofId(Long id) {
         String sql = "SELECT * FROM COMMANDE_CLIENT WHERE id=?";
 
@@ -110,7 +129,7 @@ public class CommandeRepository {
         if (commandes.isEmpty()) {
             return Optional.empty();
         } else {
-            return Optional.of(commandes.get(0));
+            return Optional.of(commandes.getFirst());
         }
 
     }
@@ -152,7 +171,12 @@ public class CommandeRepository {
         if (commandes.isEmpty()) {
             return Optional.empty();
         } else {
-            return Optional.of(commandes.get(0));
+            return Optional.of(commandes.getFirst());
         }
+    }
+
+    public void delete(Long id) {
+        jdbcTemplate.update("DELETE FROM LIGNE_COMMANDE_CLIENT WHERE id = ?", id);
+        jdbcTemplate.update("DELETE FROM COMMANDE_CLIENT WHERE id = ?", id);
     }
 }

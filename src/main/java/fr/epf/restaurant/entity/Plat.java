@@ -1,19 +1,12 @@
 package fr.epf.restaurant.entity;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
 public class Plat {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    private String nom;
 
-    private String description;
-
-    private Double prix;
+    private final Long id;
+    private final String nom;
+    private final String description;
+    private final Double prix;
 
     public Plat(Long id, String nom, String description, Double prix) {
         this.id = id;

@@ -3,13 +3,12 @@ package fr.epf.restaurant.repository;
 import fr.epf.restaurant.entity.Ingredient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementSetter;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 public class IngredientRepository {
@@ -36,10 +35,10 @@ public class IngredientRepository {
         );
     }
 
-    public Ingredient ofId(Long id){
+    public Optional<Ingredient> ofId(Long id){
         String sql = "SELECT * FROM INGREDIENT WHERE id = ?";
 
-        return jdbcTemplate.queryForObject(
+        return Optional.ofNullable(jdbcTemplate.queryForObject(
                 sql,
                 new Object[]{id},
                 (rs, rowNum) -> new Ingredient(
@@ -49,7 +48,7 @@ public class IngredientRepository {
                         rs.getDouble("stock_actuel"),
                         rs.getDouble("seuil_alerte")
                 )
-        );
+        ));
     }
 
     public Map<Ingredient, Double> ofPlatId(Long platId) {

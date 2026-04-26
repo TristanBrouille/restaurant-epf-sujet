@@ -4,9 +4,9 @@ import java.time.LocalDate;
 
 public class Commande {
 
-    private Long id;
-    private Long clientId;
-    private LocalDate dateCommande;
+    private final Long id;
+    private final Long clientId;
+    private final LocalDate dateCommande;
     private StatutCommande statut;
 
     public Commande(Long id, Long clientId, LocalDate dateCommande, StatutCommande statut) {
