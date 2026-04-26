@@ -8,7 +8,8 @@ public class Client {
     private final String email;
     private final String telephone;
 
-    public Client(Long id, String nom, String prenom, String email, String telephone) {
+    public Client(Long id, String nom, String prenom,
+                  String email, String telephone) {
         this.id = id;
         this.nom = nom;
         this.prenom = prenom;

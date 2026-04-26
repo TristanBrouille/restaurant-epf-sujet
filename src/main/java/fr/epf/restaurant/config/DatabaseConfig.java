@@ -15,7 +15,7 @@ import java.sql.SQLException;
 
 /**
  * Configuration de la base de données H2 en mémoire.
- *
+ * <p>
  * EmbeddedDatabaseBuilder exécute automatiquement schema.sql puis data.sql
  * à chaque démarrage du contexte Spring, garantissant un état initial propre.
  */
@@ -25,13 +25,17 @@ public class DatabaseConfig {
 
     @Bean
     public Server h2TcpServer() throws SQLException {
-        Server server = Server.createTcpServer("-tcp", "-tcpAllowOthers", "-tcpPort", "9092");
+        Server server = Server.createTcpServer("-tcp",
+                "-tcpAllowOthers", "-tcpPort", "9092");
         try {
             server.start();
-            Runtime.getRuntime().addShutdownHook(new Thread(server::stop));
+            Runtime.getRuntime()
+                    .addShutdownHook(
+                            new Thread(server::stop));
         } catch (SQLException e) {
             if (e.getErrorCode() == 90061) { // port déjà utilisé
-                System.out.println("[H2] TCP server non démarré : port 9092 déjà utilisé.");
+                System.out.println(
+                        "[H2] TCP server non démarré : port 9092 déjà utilisé.");
             } else {
                 throw e;
             }
@@ -50,7 +54,8 @@ public class DatabaseConfig {
     }
 
     @Bean
-    public JdbcTemplate jdbcTemplate(DataSource dataSource) {
+    public JdbcTemplate jdbcTemplate(
+            DataSource dataSource) {
         return new JdbcTemplate(dataSource);
     }
 
@@ -59,7 +64,8 @@ public class DatabaseConfig {
      * En cas de RuntimeException, la transaction est automatiquement annulée (rollback).
      */
     @Bean
-    public PlatformTransactionManager transactionManager(DataSource dataSource) {
+    public PlatformTransactionManager transactionManager(
+            DataSource dataSource) {
         return new DataSourceTransactionManager(dataSource);
     }
 }

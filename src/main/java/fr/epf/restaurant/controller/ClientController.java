@@ -19,8 +19,8 @@ public class ClientController {
     }
 
     @GetMapping
-    public List<Client> getClients(){
-        return clientService.GetClients();
+    public List<Client> getClients() {
+        return clientService.getClients();
     }
 
 

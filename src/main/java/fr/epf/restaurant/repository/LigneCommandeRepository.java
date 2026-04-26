@@ -18,7 +18,8 @@ public class LigneCommandeRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public Collection<LigneCommandeClient> ofCommandeClientId(Long id) {
+    public Collection<LigneCommandeClient> ofCommandeClientId(
+            Long id) {
         String sql = "SELECT * FROM LIGNE_COMMANDE_CLIENT WHERE commande_client_id = ?";
 
         return jdbcTemplate.query(
@@ -32,7 +33,8 @@ public class LigneCommandeRepository {
         );
     }
 
-    public Collection<LigneCommandeFournisseur> ofCommandeFournisseurId(Long id) {
+    public Collection<LigneCommandeFournisseur> ofCommandeFournisseurId(
+            Long id) {
         String sql = "SELECT * FROM LIGNE_COMMANDE_FOURNISSEUR WHERE commande_fournisseur_id = ?";
 
         return jdbcTemplate.query(

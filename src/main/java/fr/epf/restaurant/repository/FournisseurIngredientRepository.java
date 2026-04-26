@@ -22,13 +22,14 @@ public class FournisseurIngredientRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public Map<Double, Fournisseur> ofIngredientId(Long id) {
+    public Map<Double, Fournisseur> ofIngredientId(
+            Long id) {
         String sql = """
-        SELECT f.id, f.nom, f.contact, f.email, fi.prix_unitaire
-        FROM FOURNISSEUR_INGREDIENT fi
-        JOIN FOURNISSEUR f ON fi.fournisseur_id = f.id
-        WHERE fi.ingredient_id = ?
-        """;
+                SELECT f.id, f.nom, f.contact, f.email, fi.prix_unitaire
+                FROM FOURNISSEUR_INGREDIENT fi
+                JOIN FOURNISSEUR f ON fi.fournisseur_id = f.id
+                WHERE fi.ingredient_id = ?
+                """;
 
         return jdbcTemplate.query(
                 sql,
@@ -38,7 +39,8 @@ public class FournisseurIngredientRepository {
 
                     while (rs.next()) {
 
-                        double prix = rs.getDouble("prix_unitaire");
+                        double prix = rs.getDouble(
+                                "prix_unitaire");
 
                         Fournisseur fournisseur = new Fournisseur(
                                 rs.getLong("id"),
@@ -55,13 +57,14 @@ public class FournisseurIngredientRepository {
         );
     }
 
-    public Map<Double, Ingredient> ofFournisseurId(Long id) {
+    public Map<Double, Ingredient> ofFournisseurId(
+            Long id) {
         String sql = """
-        SELECT i.id, i.nom, i.unite, fi.prix_unitaire
-        FROM FOURNISSEUR_INGREDIENT fi
-        JOIN INGREDIENT i ON fi.ingredient_id = i.id
-        WHERE fi.fournisseur_id = ?
-        """;
+                SELECT i.id, i.nom, i.unite, fi.prix_unitaire
+                FROM FOURNISSEUR_INGREDIENT fi
+                JOIN INGREDIENT i ON fi.ingredient_id = i.id
+                WHERE fi.fournisseur_id = ?
+                """;
 
         return jdbcTemplate.query(
                 sql,
@@ -71,7 +74,8 @@ public class FournisseurIngredientRepository {
 
                     while (rs.next()) {
 
-                        double prix = rs.getDouble("prix_unitaire");
+                        double prix = rs.getDouble(
+                                "prix_unitaire");
 
                         Ingredient ingredient = new Ingredient(
                                 rs.getLong("id"),

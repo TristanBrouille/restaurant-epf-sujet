@@ -9,7 +9,9 @@ public class Commande {
     private final LocalDate dateCommande;
     private StatutCommande statut;
 
-    public Commande(Long id, Long clientId, LocalDate dateCommande, StatutCommande statut) {
+    public Commande(Long id, Long clientId,
+                    LocalDate dateCommande,
+                    StatutCommande statut) {
         this.id = id;
         this.clientId = clientId;
         this.dateCommande = dateCommande;

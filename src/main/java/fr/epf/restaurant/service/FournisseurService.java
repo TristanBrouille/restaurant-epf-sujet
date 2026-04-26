@@ -1,6 +1,6 @@
 package fr.epf.restaurant.service;
 
-import fr.epf.restaurant.DTO.IngredientPrix;
+import fr.epf.restaurant.dto.IngredientPrix;
 import fr.epf.restaurant.entity.Fournisseur;
 import fr.epf.restaurant.entity.Ingredient;
 import fr.epf.restaurant.repository.FournisseurIngredientRepository;
@@ -16,17 +16,21 @@ public class FournisseurService {
     private final FournisseurRepository fournisseurRepository;
     private final FournisseurIngredientRepository fournisseurIngredientRepository;
 
-    public FournisseurService(FournisseurRepository fournisseurRepository, FournisseurIngredientRepository fournisseurIngredientRepository) {
+    public FournisseurService(
+            FournisseurRepository fournisseurRepository,
+            FournisseurIngredientRepository fournisseurIngredientRepository) {
         this.fournisseurRepository = fournisseurRepository;
         this.fournisseurIngredientRepository = fournisseurIngredientRepository;
     }
 
-    public Collection<Fournisseur> fournisseurs(){
+    public Collection<Fournisseur> fournisseurs() {
         return fournisseurRepository.getAll();
     }
 
-    public Collection<IngredientPrix> catalogueFournisseur(Long id){
-        Map<Double, Ingredient> ingredientCatalogue = fournisseurIngredientRepository.ofFournisseurId(id);
+    public Collection<IngredientPrix> catalogueFournisseur(
+            Long id) {
+        Map<Double, Ingredient> ingredientCatalogue = fournisseurIngredientRepository.ofFournisseurId(
+                id);
         return ingredientCatalogue.entrySet()
                 .stream()
                 .map(entry -> new IngredientPrix(

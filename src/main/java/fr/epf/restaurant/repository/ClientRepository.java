@@ -22,7 +22,7 @@ public class ClientRepository {
     public List<Client> getAll() {
         String sql = "SELECT * FROM CLIENT";
 
-        RowMapper<Client> mapper = (rs, rowNum)-> {
+        RowMapper<Client> mapper = (rs, rowNum) -> {
             return new Client(
                     rs.getLong("id"),
                     rs.getString("nom"),
@@ -35,20 +35,21 @@ public class ClientRepository {
         return jdbcTemplate.query(sql, mapper);
     }
 
-    public Optional<Client> ofId(Long id){
+    public Optional<Client> ofId(Long id) {
         String sql = "SELECT * FROM CLIENT WHERE id = ?";
 
-        return Optional.ofNullable(jdbcTemplate.queryForObject(
-                sql,
-                new Object[]{id},
-                (rs, rowNum) -> new Client(
-                        rs.getLong("id"),
-                        rs.getString("nom"),
-                        rs.getString("prenom"),
-                        rs.getString("email"),
-                        rs.getString("telephone")
-                )
-        ));
+        return Optional.ofNullable(
+                jdbcTemplate.queryForObject(
+                        sql,
+                        new Object[]{id},
+                        (rs, rowNum) -> new Client(
+                                rs.getLong("id"),
+                                rs.getString("nom"),
+                                rs.getString("prenom"),
+                                rs.getString("email"),
+                                rs.getString("telephone")
+                        )
+                ));
     }
 
 

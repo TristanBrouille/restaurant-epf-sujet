@@ -1,6 +1,6 @@
 package fr.epf.restaurant.controller;
 
-import fr.epf.restaurant.DTO.RecetteDto;
+import fr.epf.restaurant.dto.RecetteDto;
 import fr.epf.restaurant.entity.Plat;
 import fr.epf.restaurant.service.PlatsService;
 import org.springframework.http.ResponseEntity;
@@ -12,29 +12,30 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-    @RequestMapping("/api/plats")
-    public class PlatController {
+@RequestMapping("/api/plats")
+public class PlatController {
 
-        private final PlatsService platsService;
+    private final PlatsService platsService;
 
-        public PlatController(PlatsService platsService) {
-            this.platsService = platsService;
+    public PlatController(PlatsService platsService) {
+        this.platsService = platsService;
+    }
+
+    @GetMapping()
+    public List<Plat> plats() {
+        return platsService.getPlats();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<RecetteDto> recette(
+            @PathVariable Long id) {
+        RecetteDto recette = platsService.getRecette(id);
+
+        if (recette == null) {
+            return ResponseEntity.notFound().build();
         }
 
-        @GetMapping()
-        public List<Plat> plats(){
-            return platsService.getPlats();
-        }
-
-        @GetMapping("/{id}")
-        public ResponseEntity<RecetteDto> recette(@PathVariable Long id) {
-            RecetteDto recette = platsService.getRecette(id);
-
-            if (recette == null) {
-                return ResponseEntity.notFound().build();
-            }
-
-            return ResponseEntity.ok(recette);
-        }
+        return ResponseEntity.ok(recette);
+    }
 
 }

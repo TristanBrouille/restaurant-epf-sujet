@@ -1,6 +1,6 @@
 package fr.epf.restaurant.service;
 
-import fr.epf.restaurant.DTO.RecommandationCommande;
+import fr.epf.restaurant.dto.RecommandationCommande;
 import fr.epf.restaurant.entity.Fournisseur;
 import fr.epf.restaurant.entity.Ingredient;
 import fr.epf.restaurant.repository.FournisseurIngredientRepository;
@@ -17,12 +17,14 @@ public class IngredientService {
     public final IngredientRepository ingredientRepository;
     public final FournisseurIngredientRepository fournisseurIngredientRepository;
 
-    public IngredientService(IngredientRepository ingredientRepository, FournisseurIngredientRepository fournisseurIngredientRepository) {
+    public IngredientService(
+            IngredientRepository ingredientRepository,
+            FournisseurIngredientRepository fournisseurIngredientRepository) {
         this.ingredientRepository = ingredientRepository;
         this.fournisseurIngredientRepository = fournisseurIngredientRepository;
     }
 
-    public Collection<Ingredient> ingredients(){
+    public Collection<Ingredient> ingredients() {
         return ingredientRepository.ofAll();
     }
 
@@ -32,13 +34,18 @@ public class IngredientService {
                 .toList();
     }
 
-    public Collection<RecommandationCommande> prixIngredients(Long id) {
+    public Collection<RecommandationCommande> prixIngredients(
+            Long id) {
 
-        Ingredient ingredient = ingredientRepository.ofId(id).orElseThrow(() -> new RuntimeException("Aucun ingredient trouvé pour cet id"));
-        Map<Double, Fournisseur> fournisseurIngredients = fournisseurIngredientRepository.ofIngredientId(id);
+        Ingredient ingredient = ingredientRepository.ofId(
+                        id)
+                .orElseThrow(() -> new RuntimeException(
+                        "Aucun ingredient trouvé pour cet id"));
+        Map<Double, Fournisseur> fournisseurIngredients = fournisseurIngredientRepository.ofIngredientId(
+                id);
 
         double quantiteRecommandee =
-                2*(ingredient.getSeuilAlerte() - ingredient.getStockActuel());
+                2 * (ingredient.getSeuilAlerte() - ingredient.getStockActuel());
 
         return fournisseurIngredients.entrySet()
                 .stream()
@@ -51,10 +58,11 @@ public class IngredientService {
                 .toList();
     }
 
-    public RecommandationCommande Recommandation(Long id){
+    public RecommandationCommande recommandation(Long id) {
         return prixIngredients(id)
                 .stream()
-                .min(Comparator.comparing(RecommandationCommande::prixUnitaire))
+                .min(Comparator.comparing(
+                        RecommandationCommande::prixUnitaire))
                 .orElse(null);
     }
 }
