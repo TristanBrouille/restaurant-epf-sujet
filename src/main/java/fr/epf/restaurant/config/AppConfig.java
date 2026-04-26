@@ -6,11 +6,11 @@ import org.springframework.context.annotation.Import;
 
 /**
  * Configuration principale Spring.
- *
+ * <p>
  * Scanne uniquement les packages dao et service pour éviter de charger
  * WebConfig (qui nécessite un ServletContext) dans les contextes de test.
  * DatabaseConfig est importé explicitement.
- *
+ * <p>
  * Note : pas de Spring Boot. Le contexte est démarré manuellement
  * dans Main.java avec AnnotationConfigApplicationContext.
  */

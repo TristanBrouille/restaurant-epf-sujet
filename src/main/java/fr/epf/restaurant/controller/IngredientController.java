@@ -1,6 +1,6 @@
 package fr.epf.restaurant.controller;
 
-import fr.epf.restaurant.DTO.RecommandationCommande;
+import fr.epf.restaurant.dto.RecommandationCommande;
 import fr.epf.restaurant.entity.Ingredient;
 import fr.epf.restaurant.service.IngredientService;
 import org.springframework.http.ResponseEntity;
@@ -17,27 +17,31 @@ public class IngredientController {
 
     private final IngredientService ingredientService;
 
-    public IngredientController(IngredientService ingredientService) {
+    public IngredientController(
+            IngredientService ingredientService) {
         this.ingredientService = ingredientService;
     }
 
     @GetMapping
-    public Collection<Ingredient> ingredients(){
+    public Collection<Ingredient> ingredients() {
         return ingredientService.ingredients();
     }
 
     @GetMapping("/alertes")
-    public Collection<Ingredient> alerte(){
+    public Collection<Ingredient> alerte() {
         return ingredientService.alerte();
     }
 
     @GetMapping("/{id}/prix")
-    public Collection<RecommandationCommande> prix(@PathVariable Long id){
+    public Collection<RecommandationCommande> prix(
+            @PathVariable Long id) {
         return ingredientService.prixIngredients(id);
     }
 
     @GetMapping("/{id}/recommandation")
-    public ResponseEntity<RecommandationCommande> recommandation(@PathVariable Long id){
-        return ResponseEntity.ok(ingredientService.Recommandation(id));
+    public ResponseEntity<RecommandationCommande> recommandation(
+            @PathVariable Long id) {
+        return ResponseEntity.ok(
+                ingredientService.recommandation(id));
     }
 }

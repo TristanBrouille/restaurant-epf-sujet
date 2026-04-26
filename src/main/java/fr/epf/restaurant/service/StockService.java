@@ -14,7 +14,9 @@ public class StockService {
     private final IngredientRepository ingredientRepository;
     private final LigneCommandeRepository ligneCommandeRepository;
 
-    public StockService(IngredientRepository ingredientRepository, LigneCommandeRepository ligneCommandeRepository) {
+    public StockService(
+            IngredientRepository ingredientRepository,
+            LigneCommandeRepository ligneCommandeRepository) {
         this.ingredientRepository = ingredientRepository;
         this.ligneCommandeRepository = ligneCommandeRepository;
     }
@@ -22,7 +24,8 @@ public class StockService {
     @Transactional
     public boolean lowerStockOfPlat(Long platId) {
 
-        Map<Ingredient, Double> ingredientsAndQuantity = ingredientRepository.ofPlatId(platId);
+        Map<Ingredient, Double> ingredientsAndQuantity = ingredientRepository.ofPlatId(
+                platId);
 
         for (Map.Entry<Ingredient, Double> entry : ingredientsAndQuantity.entrySet()) {
 
@@ -30,7 +33,8 @@ public class StockService {
             Double quantite = entry.getValue();
 
             if (ingredient.getStockActuel() < quantite) {
-                throw new RuntimeException("Stock insuffisant pour " + ingredient.getNom());
+                throw new RuntimeException(
+                        "Stock insuffisant pour " + ingredient.getNom());
             }
 
             ingredientRepository.updateStock(
@@ -43,10 +47,15 @@ public class StockService {
     }
 
     public void increaseStock(Long commandeId) {
-        ligneCommandeRepository.ofCommandeFournisseurId(commandeId)
+        ligneCommandeRepository.ofCommandeFournisseurId(
+                        commandeId)
                 .forEach(ligne -> {
-                    Ingredient ingredient = ingredientRepository.ofId(ligne.getIngredientId()).orElseThrow();
-                    ingredientRepository.updateStock(ligne.getIngredientId(), ligne.getQuantite()+ingredient.getStockActuel());
+                    Ingredient ingredient = ingredientRepository.ofId(
+                                    ligne.getIngredientId())
+                            .orElseThrow();
+                    ingredientRepository.updateStock(
+                            ligne.getIngredientId(),
+                            ligne.getQuantite() + ingredient.getStockActuel());
                 });
     }
 }

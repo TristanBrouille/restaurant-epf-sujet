@@ -20,7 +20,7 @@ public class IngredientRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public Collection<Ingredient> ofAll(){
+    public Collection<Ingredient> ofAll() {
         String sql = "SELECT * FROM INGREDIENT";
 
         return jdbcTemplate.query(
@@ -35,30 +35,32 @@ public class IngredientRepository {
         );
     }
 
-    public Optional<Ingredient> ofId(Long id){
+    public Optional<Ingredient> ofId(Long id) {
         String sql = "SELECT * FROM INGREDIENT WHERE id = ?";
 
-        return Optional.ofNullable(jdbcTemplate.queryForObject(
-                sql,
-                new Object[]{id},
-                (rs, rowNum) -> new Ingredient(
-                        rs.getLong("id"),
-                        rs.getString("nom"),
-                        rs.getString("unite"),
-                        rs.getDouble("stock_actuel"),
-                        rs.getDouble("seuil_alerte")
-                )
-        ));
+        return Optional.ofNullable(
+                jdbcTemplate.queryForObject(
+                        sql,
+                        new Object[]{id},
+                        (rs, rowNum) -> new Ingredient(
+                                rs.getLong("id"),
+                                rs.getString("nom"),
+                                rs.getString("unite"),
+                                rs.getDouble(
+                                        "stock_actuel"),
+                                rs.getDouble("seuil_alerte")
+                        )
+                ));
     }
 
     public Map<Ingredient, Double> ofPlatId(Long platId) {
         return jdbcTemplate.query(
                 """
-                SELECT i.*, pi.quantite_requise
-                FROM INGREDIENT i
-                JOIN PLAT_INGREDIENT pi ON i.id = pi.ingredient_id
-                WHERE pi.plat_id = ?
-                """,
+                        SELECT i.*, pi.quantite_requise
+                        FROM INGREDIENT i
+                        JOIN PLAT_INGREDIENT pi ON i.id = pi.ingredient_id
+                        WHERE pi.plat_id = ?
+                        """,
                 rs -> {
                     Map<Ingredient, Double> result = new HashMap<>();
 
@@ -67,11 +69,13 @@ public class IngredientRepository {
                                 rs.getLong("id"),
                                 rs.getString("nom"),
                                 rs.getString("unite"),
-                                rs.getDouble("stock_actuel"),
+                                rs.getDouble(
+                                        "stock_actuel"),
                                 rs.getDouble("seuil_alerte")
                         );
 
-                        double quantite = rs.getDouble("quantite_requise");
+                        double quantite = rs.getDouble(
+                                "quantite_requise");
 
                         result.put(ingredient, quantite);
                     }

@@ -31,6 +31,7 @@ public class PlatIngredientRepository {
         );
 
         return list.stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                .collect(Collectors.toMap(Map.Entry::getKey,
+                        Map.Entry::getValue));
     }
 }

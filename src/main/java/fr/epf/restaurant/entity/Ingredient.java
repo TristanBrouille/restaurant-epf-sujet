@@ -8,7 +8,9 @@ public class Ingredient {
     private Double stockActuel;
     private Double seuilAlerte;
 
-    public Ingredient(Long id, String nom, String unite, Double stockActuel, Double seuilAlerte) {
+    public Ingredient(Long id, String nom, String unite,
+                      Double stockActuel,
+                      Double seuilAlerte) {
         this.id = id;
         this.nom = nom;
         this.unite = unite;

@@ -7,7 +7,10 @@ public class LigneCommandeFournisseur {
     private final Double quantite;
     private final Double prixUnitaire;
 
-    public LigneCommandeFournisseur(Long id, Long ingredientId, Double quantite, Double prixUnitaire) {
+    public LigneCommandeFournisseur(Long id,
+                                    Long ingredientId,
+                                    Double quantite,
+                                    Double prixUnitaire) {
         this.id = id;
         this.ingredientId = ingredientId;
         this.quantite = quantite;

@@ -7,7 +7,8 @@ public class Fournisseur {
     private final String contact;
     private final String email;
 
-    public Fournisseur(Long id, String nom, String contact, String email) {
+    public Fournisseur(Long id, String nom, String contact,
+                       String email) {
         this.id = id;
         this.nom = nom;
         this.contact = contact;

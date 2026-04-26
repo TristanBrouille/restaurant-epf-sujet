@@ -22,7 +22,7 @@ public class FournisseurRepository {
     public Collection<Fournisseur> getAll() {
         String sql = "SELECT * FROM FOURNISSEUR";
 
-        RowMapper<Fournisseur> mapper = (rs, rowNum)-> {
+        RowMapper<Fournisseur> mapper = (rs, rowNum) -> {
             return new Fournisseur(
                     rs.getLong("id"),
                     rs.getString("nom"),
@@ -34,19 +34,20 @@ public class FournisseurRepository {
         return jdbcTemplate.query(sql, mapper);
     }
 
-    public Optional<Fournisseur> ofId(Long id){
+    public Optional<Fournisseur> ofId(Long id) {
         String sql = "SELECT * FROM FOURNISSEUR WHERE id = ?";
 
-        return Optional.ofNullable(jdbcTemplate.queryForObject(
-                sql,
-                new Object[]{id},
-                (rs, rowNum) -> new Fournisseur(
-                        rs.getLong("id"),
-                        rs.getString("nom"),
-                        rs.getString("contact"),
-                        rs.getString("email")
-                )
-        ));
+        return Optional.ofNullable(
+                jdbcTemplate.queryForObject(
+                        sql,
+                        new Object[]{id},
+                        (rs, rowNum) -> new Fournisseur(
+                                rs.getLong("id"),
+                                rs.getString("nom"),
+                                rs.getString("contact"),
+                                rs.getString("email")
+                        )
+                ));
     }
 
 }

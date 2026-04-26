@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class PlatRepository{
+public class PlatRepository {
 
     private JdbcTemplate jdbcTemplate;
 
@@ -23,7 +23,7 @@ public class PlatRepository{
     public List<Plat> getAll() {
         String sql = "SELECT * FROM PLAT";
 
-        RowMapper<Plat> mapper = (rs, rowNum)-> {
+        RowMapper<Plat> mapper = (rs, rowNum) -> {
             return new Plat(
                     rs.getLong("id"),
                     rs.getString("nom"),
@@ -35,19 +35,20 @@ public class PlatRepository{
         return jdbcTemplate.query(sql, mapper);
     }
 
-    public Optional<Plat> ofId(Long id){
+    public Optional<Plat> ofId(Long id) {
         String sql = "SELECT * FROM PLAT WHERE id = ?";
 
-        return Optional.ofNullable(jdbcTemplate.queryForObject(
-                sql,
-                new Object[]{id},
-                (rs, rowNum) -> new Plat(
-                        rs.getLong("id"),
-                        rs.getString("nom"),
-                        rs.getString("description"),
-                        rs.getDouble("prix")
-                )
-        ));
+        return Optional.ofNullable(
+                jdbcTemplate.queryForObject(
+                        sql,
+                        new Object[]{id},
+                        (rs, rowNum) -> new Plat(
+                                rs.getLong("id"),
+                                rs.getString("nom"),
+                                rs.getString("description"),
+                                rs.getDouble("prix")
+                        )
+                ));
     }
 
 }

@@ -8,7 +8,8 @@ public class Plat {
     private final String description;
     private final Double prix;
 
-    public Plat(Long id, String nom, String description, Double prix) {
+    public Plat(Long id, String nom, String description,
+                Double prix) {
         this.id = id;
         this.nom = nom;
         this.description = description;
